@@ -1,6 +1,7 @@
 {
   "slides": [
     {"text": "First slide good job!"},
-    {"text": "<h1> Second Slide!</h2><p>good job!</p>"}
+    {"text": "<h1> Second Slide!</h1><p>good job!</p>"},
+    {"text": "<h1> Three slides!</h1><p>good job good job good job!</p>"}
   ]
 }
