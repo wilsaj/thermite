@@ -3,17 +3,20 @@ var browserify = require('browserify');
 var del = require('del');
 var gulp = require('gulp');
 var react = require('gulp-react');
+var sass = require('gulp-ruby-sass');
 var transform = require('vinyl-transform');
 var vinylPaths = require('vinyl-paths');
 
 
 var dirs = {
   dist: 'dist/',
+  sassCache: '.sass-cache',
   tmp: '.tmp/'
 };
 
 var paths = {
-  jsx: 'lib/**/*.jsx'
+  jsx: 'lib/**/*.jsx',
+  scss: 'lib/**/*.scss'
 };
 
 gulp.task('default', ['dist']);
@@ -29,10 +32,15 @@ gulp.task('browserify', ['react'], function () {
     .pipe(gulp.dest(dirs.dist));
 });
 
-gulp.task('clean', ['clean-dist', 'clean-tmp']);
+gulp.task('clean', ['clean-dist', 'clean-tmp', 'clean-sass-cache']);
 
 gulp.task('clean-dist', function() {
   return gulp.src(dirs.dist)
+    .pipe(vinylPaths(del));
+});
+
+gulp.task('clean-sass-cache', function() {
+  return gulp.src(dirs.sassCache)
     .pipe(vinylPaths(del));
 });
 
@@ -43,7 +51,7 @@ gulp.task('clean-tmp', function() {
 
 gulp.task('dev', ['default', 'watch']);
 
-gulp.task('dist', ['react', 'browserify']);
+gulp.task('dist', ['react', 'browserify', 'scss']);
 
 gulp.task('react', function () {
   return gulp.src(paths.jsx)
@@ -51,6 +59,13 @@ gulp.task('react', function () {
     .pipe(gulp.dest(dirs.tmp));
 });
 
+gulp.task('scss', function () {
+  return gulp.src(paths.scss)
+    .pipe(sass())
+    .pipe(gulp.dest(dirs.dist));
+});
+
 gulp.task('watch', function () {
-  return gulp.watch(paths.jsx, ['default']);
+  gulp.watch(paths.jsx, ['browserify']);
+  gulp.watch(paths.scss, ['scss']);
 });
