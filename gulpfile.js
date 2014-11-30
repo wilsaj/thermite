@@ -1,13 +1,17 @@
 'use strict';
 var browserify = require('browserify');
+var del = require('del');
 var gulp = require('gulp');
 var react = require('gulp-react');
 var transform = require('vinyl-transform');
+var vinylPaths = require('vinyl-paths');
+
 
 var dirs = {
   dist: 'dist/',
   tmp: '.tmp/'
 };
+
 var paths = {
   jsx: 'lib/**/*.jsx'
 };
@@ -25,6 +29,17 @@ gulp.task('browserify', ['react'], function () {
     .pipe(gulp.dest(dirs.dist));
 });
 
+gulp.task('clean', ['clean-dist', 'clean-tmp']);
+
+gulp.task('clean-dist', function() {
+  return gulp.src(dirs.dist)
+    .pipe(vinylPaths(del));
+});
+
+gulp.task('clean-tmp', function() {
+  return gulp.src(dirs.tmp)
+    .pipe(vinylPaths(del));
+});
 
 gulp.task('dev', ['default', 'watch']);
 
