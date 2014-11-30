@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/wilsaj/thermite",
   "devDependencies": {
+    "browserify": "^6.3.3",
     "gulp": "^3.8.10",
-    "gulp-react": "^2.0.0"
+    "gulp-react": "^2.0.0",
+    "vinyl-transform": "^1.0.0"
   }
 }
