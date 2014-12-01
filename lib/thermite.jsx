@@ -1,6 +1,8 @@
 'use strict';
 
+var http = require('http-browserify');
 var React = require('react/addons');
+var url = require('url');
 
 var Slideshow = React.createClass({
   getInitialState: function() {
@@ -10,20 +12,28 @@ var Slideshow = React.createClass({
     };
   },
   componentDidMount: function() {
-    var url = $('#slideshow').attr('data-url');
+    var component = this;
 
-    $.ajax({
-      url: url,
-      dataType: 'json',
-      success: function(data) {
-        this.setState({
+    var dataUrl = this.getDOMNode().parentNode.getAttribute('data-url');
+    var urlStr = url.resolve(window.location.href, dataUrl);
+    var urlObj = url.parse(urlStr);
+
+    http.get(urlObj, function (res) {
+      var str = "";
+      res.on('data', function (buf) {
+        str += buf;
+      });
+      res.on('error', function (err) {
+        console.error(urlStr, res.status, err.toString());
+      });
+      res.on('end', function (buf) {
+        var data = JSON.parse(str);
+
+        component.setState({
           slides: data.slides,
           active: 0
         });
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(url, status, err.toString());
-      }.bind(this)
+      });
     });
   },
   handleClick: function(event) {
