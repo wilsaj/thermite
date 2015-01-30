@@ -38,6 +38,10 @@ var ReactFitText = React.createClass({
     window.removeEventListener("resize", this._onBodyResize);
   },
 
+  componentWillUpdate: function() {
+    this._onBodyResize();
+  },
+
   _onBodyResize: function() {
     var element = this.getDOMNode();
     var width = element.offsetWidth;
