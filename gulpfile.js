@@ -6,7 +6,7 @@ var react = require('gulp-react');
 var sass = require('gulp-ruby-sass');
 var transform = require('vinyl-transform');
 var vinylPaths = require('vinyl-paths');
-
+var webserver = require('gulp-webserver');
 
 var dirs = {
   dist: 'dist/',
@@ -49,7 +49,7 @@ gulp.task('clean-tmp', function() {
     .pipe(vinylPaths(del));
 });
 
-gulp.task('dev', ['default', 'watch']);
+gulp.task('dev', ['default', 'watch', 'webserver']);
 
 gulp.task('dist', ['react', 'browserify', 'scss']);
 
@@ -68,4 +68,12 @@ gulp.task('scss', function () {
 gulp.task('watch', function () {
   gulp.watch(paths.jsx, ['browserify']);
   gulp.watch(paths.scss, ['scss']);
+});
+
+gulp.task('webserver', function() {
+  gulp.src('./')
+    .pipe(webserver({
+      livereload: true,
+      open: 'example/slides.html'
+    }));
 });
