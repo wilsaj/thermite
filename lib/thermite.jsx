@@ -4,6 +4,59 @@ var http = require('http-browserify');
 var React = require('react/addons');
 var url = require('url');
 
+
+// this part stole from https://github.com/gianu/react-fittext
+// TODO: properly submit PRs and use npm version of react-fittext
+//
+//     - it had some confusingly broken dependencies at the time of writing
+//
+var ReactPropTypes = React.PropTypes;
+var ReactFitText = React.createClass({
+  displayName: 'ReactFitText',
+
+  propTypes: {
+    children: ReactPropTypes.element.isRequired,
+    compressor: ReactPropTypes.number,
+    minFontSize: ReactPropTypes.number,
+    maxFontSize: ReactPropTypes.number
+  },
+
+  getDefaultProps: function() {
+    return {
+      compressor: 1.0,
+      minFontSize: Number.NEGATIVE_INFINITY,
+      maxFontSize: Number.POSITIVE_INFINITY
+    };
+  },
+
+  componentDidMount: function() {
+    window.addEventListener("resize", this._onBodyResize);
+    this._onBodyResize();
+  },
+
+  componentWillUnmount: function() {
+    window.removeEventListener("resize", this._onBodyResize);
+  },
+
+  componentWillUpdate: function() {
+    this._onBodyResize();
+  },
+
+  _onBodyResize: function() {
+    var element = this.getDOMNode();
+    var width = element.offsetWidth;
+    element.style.fontSize = Math.max(
+                      Math.min((width / (this.props.compressor*10)),
+                                parseFloat(this.props.maxFontSize)),
+                      parseFloat(this.props.minFontSize)) + 'px';
+  },
+
+  render: function() {
+    return this.props.children;
+  }
+});
+//--------------------
+
 var Slideshow = React.createClass({
   getInitialState: function() {
     return {
@@ -80,9 +133,13 @@ var Slide = React.createClass({
       'hidden': !this.props.active
     });
 
+    var str = this.props.children.toString();
+
     return (
       <div className={classes}>
-        <span dangerouslySetInnerHTML={{__html: this.props.children.toString()}} />
+        <ReactFitText>
+          <div dangerouslySetInnerHTML={{__html: str}}></div>
+        </ReactFitText>
       </div>
     );
   }
