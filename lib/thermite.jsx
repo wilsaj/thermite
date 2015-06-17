@@ -2,6 +2,7 @@
 
 var http = require('http-browserify');
 var React = require('react/addons');
+var textFit = require('textFit');
 var url = require('url');
 
 
@@ -23,6 +24,12 @@ var ReactTextFit = React.createClass({
 
   _onBodyResize: function() {
     var element = this.getDOMNode();
+    var settings = {
+      alignVert: true,
+      alignHoriz: true,
+      maxFontSize: 1000
+    };
+    textFit(element, settings);
   },
 
   render: function() {
@@ -74,7 +81,7 @@ var Slideshow = React.createClass({
     }
     return (
       <div onClick={this.handleClick}>
-        <Slide key="test">
+        <Slide>
           {text}
         </Slide>
       </div>

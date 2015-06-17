@@ -30,6 +30,7 @@
     "vinyl-transform": "^1.0.0"
   },
   "dependencies": {
-    "http-browserify": "^1.7.0"
+    "http-browserify": "^1.7.0",
+    "textfit": "^2.2.2"
   }
 }
