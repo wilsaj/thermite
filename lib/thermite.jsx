@@ -5,29 +5,8 @@ var React = require('react/addons');
 var url = require('url');
 
 
-// this part stole from https://github.com/gianu/react-fittext
-// TODO: properly submit PRs and use npm version of react-fittext
-//
-//     - it had some confusingly broken dependencies at the time of writing
-//
-var ReactPropTypes = React.PropTypes;
-var ReactFitText = React.createClass({
-  displayName: 'ReactFitText',
-
-  propTypes: {
-    children: ReactPropTypes.element.isRequired,
-    compressor: ReactPropTypes.number,
-    minFontSize: ReactPropTypes.number,
-    maxFontSize: ReactPropTypes.number
-  },
-
-  getDefaultProps: function() {
-    return {
-      compressor: 1.0,
-      minFontSize: Number.NEGATIVE_INFINITY,
-      maxFontSize: Number.POSITIVE_INFINITY
-    };
-  },
+var ReactTextFit = React.createClass({
+  displayName: 'ReactTextFit',
 
   componentDidMount: function() {
     window.addEventListener("resize", this._onBodyResize);
@@ -38,17 +17,12 @@ var ReactFitText = React.createClass({
     window.removeEventListener("resize", this._onBodyResize);
   },
 
-  componentWillUpdate: function() {
+  componentDidUpdate: function() {
     this._onBodyResize();
   },
 
   _onBodyResize: function() {
     var element = this.getDOMNode();
-    var width = element.offsetWidth;
-    element.style.fontSize = Math.max(
-                      Math.min((width / (this.props.compressor*10)),
-                                parseFloat(this.props.maxFontSize)),
-                      parseFloat(this.props.minFontSize)) + 'px';
   },
 
   render: function() {
@@ -94,31 +68,15 @@ var Slideshow = React.createClass({
     this.setState({active: next});
   },
   render: function() {
+    var text = "";
+    if (this.state.slides.length) {
+      text = this.state.slides[this.state.active].text;
+    }
     return (
       <div onClick={this.handleClick}>
-        <SlideList slides={this.state.slides} active={this.state.active} />
-      </div>
-    );
-  }
-});
-
-
-var SlideList = React.createClass({
-  render: function() {
-    var slides = this.props.slides;
-    var active = this.props.active;
-    var slideNodes = slides.map(function (slide, i) {
-      var key = 'react-' + i;
-      var slideActive = active == i;
-      return (
-        <Slide key={key} active={slideActive}>
-          {slide.text}
+        <Slide key="test">
+          {text}
         </Slide>
-      );
-    });
-    return (
-      <div className="slides">
-        {slideNodes}
       </div>
     );
   }
@@ -129,17 +87,21 @@ var Slide = React.createClass({
   render: function() {
     var cx = React.addons.classSet;
     var classes = cx({
-      'slide': true,
-      'hidden': !this.props.active
+      'slide': true
     });
 
     var str = this.props.children.toString();
 
+    var divStyle = {
+      height: "100%",
+      width: "100%"
+    };
+
     return (
       <div className={classes}>
-        <ReactFitText>
-          <div dangerouslySetInnerHTML={{__html: str}}></div>
-        </ReactFitText>
+        <ReactTextFit>
+          <div style={divStyle} dangerouslySetInnerHTML={{__html: str}}></div>
+        </ReactTextFit>
       </div>
     );
   }
