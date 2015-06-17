@@ -27,7 +27,8 @@ var ReactTextFit = React.createClass({
     var settings = {
       alignVert: true,
       alignHoriz: true,
-      maxFontSize: 1000
+      maxFontSize: 1000,
+      multiLine: true
     };
     textFit(element, settings);
   },
