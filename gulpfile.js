@@ -1,6 +1,7 @@
 'use strict';
 var browserify = require('browserify');
 var del = require('del');
+var eslint = require('gulp-eslint');
 var gulp = require('gulp');
 var react = require('gulp-react');
 var sass = require('gulp-ruby-sass');
@@ -63,6 +64,13 @@ gulp.task('scss', function () {
   return gulp.src(paths.scss)
     .pipe(sass())
     .pipe(gulp.dest(dirs.dist));
+});
+
+gulp.task('lint', function () {
+  return gulp.src([paths.jsx])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError());
 });
 
 gulp.task('watch', function () {
