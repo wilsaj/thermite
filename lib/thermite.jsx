@@ -13,12 +13,12 @@ var ReactTextFit = React.createClass({
   displayName: 'ReactTextFit',
 
   componentDidMount: function() {
-    window.addEventListener("resize", this._onBodyResize);
+    window.addEventListener('resize', this._onBodyResize);
     this._onBodyResize();
   },
 
   componentWillUnmount: function() {
-    window.removeEventListener("resize", this._onBodyResize);
+    window.removeEventListener('resize', this._onBodyResize);
   },
 
   componentDidUpdate: function() {
@@ -31,14 +31,14 @@ var ReactTextFit = React.createClass({
       alignVert: true,
       alignHoriz: true,
       maxFontSize: 1000,
-      multiLine: true
+      multiLine: true,
     };
     textFit(element, settings);
   },
 
   render: function() {
     return this.props.children;
-  }
+  },
 });
 //--------------------
 
@@ -47,7 +47,7 @@ var Slideshow = React.createClass({
   getInitialState: function() {
     return {
       slides: [],
-      active: null
+      active: null,
     };
   },
   componentDidMount: function() {
@@ -58,7 +58,7 @@ var Slideshow = React.createClass({
     var urlObj = url.parse(urlStr);
 
     http.get(urlObj, function (res) {
-      var str = "";
+      var str = '';
       res.on('data', function (buf) {
         str += buf;
       });
@@ -70,14 +70,14 @@ var Slideshow = React.createClass({
 
         component.setState({
           slides: data.slides,
-          active: 0
+          active: 0,
         });
       });
     });
   },
   changeSlide: function(n) {
     var next = this.state.active + n;
-    if (0 <= next && next < this.state.slides.length) {
+    if (next >= 0 && next < this.state.slides.length) {
       this.setState({active: next});
     }
   },
@@ -87,16 +87,20 @@ var Slideshow = React.createClass({
   handleHotkey: function(event) {
     var that = this;
     var mappedKeys = {
-      "ArrowRight": function () {that.changeSlide(1);},
-      "ArrowLeft": function () {that.changeSlide(-1);},
+      'ArrowRight': function () {
+        that.changeSlide(1);
+      },
+      'ArrowLeft': function () {
+        that.changeSlide(-1);
+      },
     };
 
-    if(R.has(event.key)(mappedKeys)) {
+    if (R.has(event.key)(mappedKeys)) {
       mappedKeys[event.key]();
     }
   },
   render: function() {
-    var text = "";
+    var text = '';
     if (this.state.slides.length) {
       text = this.state.slides[this.state.active].text;
     }
@@ -107,7 +111,7 @@ var Slideshow = React.createClass({
         </Slide>
       </div>
     );
-  }
+  },
 });
 
 
@@ -115,14 +119,14 @@ var Slide = React.createClass({
   render: function() {
     var cx = React.addons.classSet;
     var classes = cx({
-      'slide': true
+      'slide': true,
     });
 
     var str = this.props.children.toString();
 
     var divStyle = {
-      height: "100%",
-      width: "100%"
+      height: '100%',
+      width: '100%',
     };
 
     return (
@@ -132,7 +136,7 @@ var Slide = React.createClass({
         </ReactTextFit>
       </div>
     );
-  }
+  },
 });
 
 
