@@ -1,28 +1,30 @@
 'use strict';
+
+var babel = require('gulp-babel');
 var browserify = require('browserify');
 var del = require('del');
 var eslint = require('gulp-eslint');
 var gulp = require('gulp');
-var react = require('gulp-react');
 var sass = require('gulp-ruby-sass');
 var transform = require('vinyl-transform');
 var vinylPaths = require('vinyl-paths');
 var webserver = require('gulp-webserver');
 
+
 var dirs = {
   dist: 'dist/',
   sassCache: '.sass-cache',
-  tmp: '.tmp/'
+  tmp: '.tmp/',
 };
 
 var paths = {
   jsx: 'lib/**/*.jsx',
-  scss: 'lib/**/*.scss'
+  scss: 'lib/**/*.scss',
 };
 
 gulp.task('default', ['dist']);
 
-gulp.task('browserify', ['react'], function () {
+gulp.task('browserify', ['jsx'], function () {
   var browserified = transform(function(filename) {
     var b = browserify(filename);
     return b.bundle();
@@ -52,11 +54,11 @@ gulp.task('clean-tmp', function() {
 
 gulp.task('dev', ['default', 'watch', 'webserver']);
 
-gulp.task('dist', ['react', 'browserify', 'scss']);
+gulp.task('dist', ['jsx', 'browserify', 'scss']);
 
-gulp.task('react', function () {
+gulp.task('jsx', function () {
   return gulp.src(paths.jsx)
-    .pipe(react())
+    .pipe(babel())
     .pipe(gulp.dest(dirs.tmp));
 });
 
