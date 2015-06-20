@@ -85,13 +85,12 @@ const Slideshow = React.createClass({
     this.changeSlide(1);
   },
   handleHotkey: function(event) {
-    const that = this;
     const mappedKeys = {
-      'ArrowRight': function () {
-        that.changeSlide(1);
+      'ArrowRight': () => {
+        this.changeSlide(1);
       },
-      'ArrowLeft': function () {
-        that.changeSlide(-1);
+      'ArrowLeft': () => {
+        this.changeSlide(-1);
       },
     };
 
