@@ -1,10 +1,13 @@
 'use strict';
 
 var http = require('http-browserify');
+var hotkey = require('react-hotkey');
+var R = require('ramda');
 var React = require('react/addons');
 var textFit = require('textFit');
 var url = require('url');
 
+hotkey.activate();
 
 var ReactTextFit = React.createClass({
   displayName: 'ReactTextFit',
@@ -40,6 +43,7 @@ var ReactTextFit = React.createClass({
 //--------------------
 
 var Slideshow = React.createClass({
+  mixins: [hotkey.Mixin('handleHotkey')],
   getInitialState: function() {
     return {
       slides: [],
@@ -71,9 +75,25 @@ var Slideshow = React.createClass({
       });
     });
   },
+  changeSlide: function(n) {
+    var next = this.state.active + n;
+    if (0 <= next && next < this.state.slides.length) {
+      this.setState({active: next});
+    }
+  },
   handleClick: function(event) {
-    var next = this.state.active === this.state.slides.length - 1 ? 0 : this.state.active + 1;
-    this.setState({active: next});
+    this.changeSlide(1);
+  },
+  handleHotkey: function(event) {
+    var that = this;
+    var mappedKeys = {
+      "ArrowRight": function () {that.changeSlide(1);},
+      "ArrowLeft": function () {that.changeSlide(-1);},
+    };
+
+    if(R.has(event.key)(mappedKeys)) {
+      mappedKeys[event.key]();
+    }
   },
   render: function() {
     var text = "";
