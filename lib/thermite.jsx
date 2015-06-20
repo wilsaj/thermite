@@ -1,15 +1,15 @@
 'use strict';
 
-var http = require('http-browserify');
-var hotkey = require('react-hotkey');
-var R = require('ramda');
-var React = require('react/addons');
-var textFit = require('textFit');
-var url = require('url');
+const http = require('http-browserify');
+const hotkey = require('react-hotkey');
+const R = require('ramda');
+const React = require('react/addons');
+const textFit = require('textFit');
+const url = require('url');
 
 hotkey.activate();
 
-var ReactTextFit = React.createClass({
+const ReactTextFit = React.createClass({
   displayName: 'ReactTextFit',
 
   componentDidMount: function() {
@@ -26,8 +26,8 @@ var ReactTextFit = React.createClass({
   },
 
   _onBodyResize: function() {
-    var element = this.getDOMNode();
-    var settings = {
+    const element = this.getDOMNode();
+    const settings = {
       alignVert: true,
       alignHoriz: true,
       maxFontSize: 1000,
@@ -42,7 +42,7 @@ var ReactTextFit = React.createClass({
 });
 //--------------------
 
-var Slideshow = React.createClass({
+const Slideshow = React.createClass({
   mixins: [hotkey.Mixin('handleHotkey')],
   getInitialState: function() {
     return {
@@ -51,14 +51,14 @@ var Slideshow = React.createClass({
     };
   },
   componentDidMount: function() {
-    var component = this;
+    const component = this;
 
-    var dataUrl = this.getDOMNode().parentNode.getAttribute('data-url');
-    var urlStr = url.resolve(window.location.href, dataUrl);
-    var urlObj = url.parse(urlStr);
+    const dataUrl = this.getDOMNode().parentNode.getAttribute('data-url');
+    const urlStr = url.resolve(window.location.href, dataUrl);
+    const urlObj = url.parse(urlStr);
 
     http.get(urlObj, function (res) {
-      var str = '';
+      let str = '';
       res.on('data', function (buf) {
         str += buf;
       });
@@ -76,7 +76,7 @@ var Slideshow = React.createClass({
     });
   },
   changeSlide: function(n) {
-    var next = this.state.active + n;
+    const next = this.state.active + n;
     if (next >= 0 && next < this.state.slides.length) {
       this.setState({active: next});
     }
@@ -85,8 +85,8 @@ var Slideshow = React.createClass({
     this.changeSlide(1);
   },
   handleHotkey: function(event) {
-    var that = this;
-    var mappedKeys = {
+    const that = this;
+    const mappedKeys = {
       'ArrowRight': function () {
         that.changeSlide(1);
       },
@@ -100,7 +100,7 @@ var Slideshow = React.createClass({
     }
   },
   render: function() {
-    var text = '';
+    let text = '';
     if (this.state.slides.length) {
       text = this.state.slides[this.state.active].text;
     }
@@ -115,16 +115,16 @@ var Slideshow = React.createClass({
 });
 
 
-var Slide = React.createClass({
+const Slide = React.createClass({
   render: function() {
-    var cx = React.addons.classSet;
-    var classes = cx({
+    const cx = React.addons.classSet;
+    const classes = cx({
       'slide': true,
     });
 
-    var str = this.props.children.toString();
+    const str = this.props.children.toString();
 
-    var divStyle = {
+    const divStyle = {
       height: '100%',
       width: '100%',
     };
