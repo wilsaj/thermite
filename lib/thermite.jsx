@@ -100,12 +100,19 @@ const Slideshow = React.createClass({
   },
   render: function() {
     let text = '';
+    let img = '';
     if (this.state.slides.length) {
-      text = this.state.slides[this.state.active].text;
+      let active = this.state.slides[this.state.active];
+      if (active.text) {
+        text = active.text;
+      }
+      if (active.img) {
+        img = active.img;
+      }
     }
     return (
       <div onClick={this.handleClick}>
-        <Slide>
+        <Slide backgroundImage={img}>
           {text}
         </Slide>
       </div>
@@ -117,17 +124,29 @@ const Slideshow = React.createClass({
 const Slide = React.createClass({
   render: function() {
     const cx = React.addons.classSet;
-    const classes = cx({
+    let classObj = {
       'slide': true,
-    });
+      'imaged': false,
+    };
 
     const str = this.props.children.toString();
 
-    const divStyle = {
+    let divStyle = {
       height: '100%',
       width: '100%',
     };
 
+    if (this.props.backgroundImage) {
+      classObj.imaged = true;
+      divStyle = R.merge(divStyle, {
+        'backgroundImage': "url('" + this.props.backgroundImage + "')",
+        'backgroundRepeat': 'no-repeat',
+        'backgroundSize': 'contain',
+        'backgroundPosition': 'center',
+      });
+    }
+
+    const classes = cx(classObj);
     return (
       <div className={classes}>
         <ReactTextFit>
