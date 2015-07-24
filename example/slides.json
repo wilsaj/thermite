@@ -1,6 +1,7 @@
 {
   "slides": [
-    {"text": "<h1> First Slide!</h1><p>good job!</p>"},
+    {"text": "<h1> First Slide!</h1><p>good job!</p>",
+     "color": "#00ff00"},
     {"text": "<h1> Second Slide!</h1><p>good job!</p>",
       "img": "http://i.imgur.com/MwIvz.jpg"
     },

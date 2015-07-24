@@ -101,6 +101,7 @@ const Slideshow = React.createClass({
   render: function() {
     let text = '';
     let img = '';
+    let color = '';
     if (this.state.slides.length) {
       let active = this.state.slides[this.state.active];
       if (active.text) {
@@ -109,10 +110,14 @@ const Slideshow = React.createClass({
       if (active.img) {
         img = active.img;
       }
+      if (active.color) {
+        color = active.color;
+      }
     }
+
     return (
       <div onClick={this.handleClick}>
-        <Slide backgroundImage={img}>
+        <Slide backgroundImage={img} backgroundColor={color}>
           {text}
         </Slide>
       </div>
@@ -137,12 +142,19 @@ const Slide = React.createClass({
     };
 
     if (this.props.backgroundImage) {
+      const img = this.props.backgroundImage;
       classObj.imaged = true;
       divStyle = R.merge(divStyle, {
-        'backgroundImage': "url('" + this.props.backgroundImage + "')",
+        'backgroundImage': "url('" + img + "')",
         'backgroundRepeat': 'no-repeat',
         'backgroundSize': 'contain',
         'backgroundPosition': 'center',
+      });
+    }
+
+    if (this.props.backgroundColor) {
+      divStyle = R.merge(divStyle, {
+        'backgroundColor': this.props.backgroundColor,
       });
     }
 
