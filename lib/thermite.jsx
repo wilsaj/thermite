@@ -85,6 +85,9 @@ const Slideshow = React.createClass({
               if (swatches.hasOwnProperty('Vibrant')) {
                 slide.color = swatches.Vibrant.getHex();
               }
+              if (swatches.hasOwnProperty('Muted')) {
+                slide.textColor = swatches.Muted.getHex();
+              }
             });
           }
         });
@@ -133,6 +136,9 @@ const Slideshow = React.createClass({
       if (active.color) {
         props.backgroundColor = active.color;
       }
+      if (active.textColor) {
+        props.color = active.textColor;
+      }
     }
 
     return (
@@ -175,6 +181,12 @@ const Slide = React.createClass({
     if (this.props.backgroundColor) {
       divStyle = R.merge(divStyle, {
         'backgroundColor': this.props.backgroundColor,
+      });
+    }
+
+    if (this.props.color) {
+      divStyle = R.merge(divStyle, {
+        'color': this.props.color,
       });
     }
 
