@@ -1,9 +1,10 @@
+var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: './lib/thermite.jsx',
+  entry: path.join(__dirname, 'lib/thermite.jsx'),
   output: {
-    path: './dist',
+    path: path.join(__dirname, 'dist'),
     publicPath: '/dist/',
     filename: 'thermite.js',
   },
