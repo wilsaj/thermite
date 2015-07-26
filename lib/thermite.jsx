@@ -1,6 +1,7 @@
 'use strict';
 
 require('./thermite.scss');
+require('vibrant');
 
 const http = require('http-browserify');
 const hotkey = require('react-hotkey');
@@ -69,6 +70,23 @@ const Slideshow = React.createClass({
       });
       res.on('end', function (buf) {
         var data = JSON.parse(str);
+
+        data.slides.forEach((slide) => {
+          if (!slide.color && slide.img) {
+            var img = document.createElement('img');
+            img.setAttribute('src', slide.img);
+            img.setAttribute('crossOrigin', 'anonymous');
+
+            img.addEventListener('load', function() {
+              var vibrant = new Vibrant(img);
+              var swatches = vibrant.swatches();
+
+              if (swatches.hasOwnProperty('Vibrant')) {
+                slide.color = swatches.Vibrant.getHex();
+              }
+            });
+          }
+        });
 
         component.setState({
           slides: data.slides,

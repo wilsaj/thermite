@@ -1,5 +1,6 @@
-var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
   entry: path.join(__dirname, 'lib/thermite.jsx'),
@@ -27,7 +28,13 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    root: [path.join(__dirname, 'bower_components')],
+  },
   plugins: [
     new ExtractTextPlugin('[name].css'),
+      new webpack.ResolverPlugin(
+        new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
+      ),
   ],
 };

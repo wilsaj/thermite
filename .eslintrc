@@ -8,6 +8,8 @@ env:
   browser: true
   node: true
 
+globals:
+  Vibrant: true
 
 # these are taken from the .eslintrc file at https://github.com/facebook/react
 rules:
