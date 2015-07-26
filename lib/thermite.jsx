@@ -73,13 +73,14 @@ const Slideshow = React.createClass({
 
         data.slides.forEach((slide) => {
           if (!slide.color && slide.img) {
-            var img = document.createElement('img');
+            let img = document.createElement('img');
             img.setAttribute('src', slide.img);
             img.setAttribute('crossOrigin', 'anonymous');
+            img.setAttribute('visibility', 'hidden');
 
             img.addEventListener('load', function() {
-              var vibrant = new Vibrant(img);
-              var swatches = vibrant.swatches();
+              let vibrant = new Vibrant(img);
+              const swatches = vibrant.swatches();
 
               if (swatches.hasOwnProperty('Vibrant')) {
                 slide.color = swatches.Vibrant.getHex();
@@ -120,24 +121,23 @@ const Slideshow = React.createClass({
   },
   render: function() {
     let text = '';
-    let img = '';
-    let color = '';
+    let props = {};
     if (this.state.slides.length) {
       let active = this.state.slides[this.state.active];
       if (active.text) {
         text = active.text;
       }
       if (active.img) {
-        img = active.img;
+        props.backgroundImage = active.img;
       }
       if (active.color) {
-        color = active.color;
+        props.backgroundColor = active.color;
       }
     }
 
     return (
       <div onClick={this.handleClick}>
-        <Slide backgroundImage={img} backgroundColor={color}>
+        <Slide {...props}>
           {text}
         </Slide>
       </div>
