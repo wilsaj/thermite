@@ -1,5 +1,6 @@
 'use strict';
-require('./thermite.scss')
+
+require('./thermite.scss');
 
 const http = require('http-browserify');
 const hotkey = require('react-hotkey');

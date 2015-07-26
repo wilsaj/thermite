@@ -8,6 +8,13 @@ module.exports = {
     filename: 'thermite.js',
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.jsx$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+      },
+    ],
     loaders: [
       {
         test: /\.scss$/,
